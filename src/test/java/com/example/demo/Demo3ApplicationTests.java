@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.additional.query.impl.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.additional.update.impl.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
@@ -20,6 +22,7 @@ import com.example.demo.mapper.ReptileconfigMapper;
 import com.example.demo.mapper.UserMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,7 +170,7 @@ public class Demo3ApplicationTests {
 
     @Test
     public void test10() {
-        QueryWrapper<User> queryWrapper = new QueryWrapper(null,"ID");
+        QueryWrapper<User> queryWrapper = new QueryWrapper(null, "ID");
 
         queryWrapper.select("name");
         //多次设值,只会用最后一个
@@ -178,7 +181,7 @@ public class Demo3ApplicationTests {
 
     @Test
     @Rollback
-    public void test11(){
+    public void test11() {
         User user = new User();
         user.setName("abc");
         UpdateWrapper updateWrapper = new UpdateWrapper(user);
@@ -188,17 +191,17 @@ public class Demo3ApplicationTests {
 
 
     @Test
-    public void test12(){
+    public void test12() {
         System.out.println(userMapper.delete(null));
     }
 
 
     @Test
-    public void test13(){
+    public void test13() {
         QueryWrapper<User> query = Wrappers.query();
         Map map = new HashMap();
-        map.put("id",1);
-        map.put("b",null);
+        map.put("id", 1);
+        map.put("b", null);
 
         query.allEq((name, obj) -> {
             System.out.println("name = " + name);
@@ -210,7 +213,7 @@ public class Demo3ApplicationTests {
     }
 
     @Test
-    public void test14(){
+    public void test14() {
         LambdaUpdateWrapper<User> objectLambdaUpdateWrapper = Wrappers.lambdaUpdate();
         objectLambdaUpdateWrapper.like(column -> {
             System.out.println("column = " + column);
@@ -223,7 +226,7 @@ public class Demo3ApplicationTests {
     }
 
     @Test
-    public void test15(){
+    public void test15() {
         QueryWrapper<User> query = Wrappers.query();
         List<User> users = userMapper.selectList(query);
         System.out.println(users);
@@ -231,7 +234,7 @@ public class Demo3ApplicationTests {
 
 
     @Test
-    public void tst16(){
+    public void tst16() {
         LambdaQueryWrapper<User> objectLambdaQueryWrapper = new LambdaQueryWrapper<>();
         objectLambdaQueryWrapper.like(User::getEmail, "@").orderByDesc(User::getId);
 
@@ -240,7 +243,7 @@ public class Demo3ApplicationTests {
 
 
     @Test
-    public void test17(){
+    public void test17() {
         LambdaQueryChainWrapper<User> userLambdaQueryChainWrapper = new LambdaQueryChainWrapper<>(userMapper);
 
         List<User> users = userLambdaQueryChainWrapper.like(User::getEmail, "a").list();
@@ -249,20 +252,54 @@ public class Demo3ApplicationTests {
     }
 
     @Test
-    public void test18(){
+    public void test18() {
         User user = new User();
         user.setName("123");
         System.out.println(new LambdaUpdateChainWrapper<>(userMapper).update(user));
     }
 
     @Test
-    public void test19(){
+    public void test19() {
         List<User> all = userMapper.getAll(Wrappers.<User>lambdaQuery().like(User::getId, "2"));
-
         all.forEach(System.out::println);
     }
 
+    @Test
+    public void test20(){
+        Page<User> page = new Page<>();
+        page.setSize(2);
+        IPage<User> userIPage = userMapper.selectPage(page, null);
+        List<User> records = userIPage.getRecords();
 
+        records.forEach(System.out::println);
+    }
+
+    @Test
+    public void test21(){
+        Page<User> page = new Page<>();
+
+        IPage<Map<String, Object>> mapIPage = userMapper.selectMapsPage(page, null);
+        List<Map<String, Object>> records = mapIPage.getRecords();
+
+        System.out.println(records);
+    }
+
+    @Test
+    public void test22() throws JsonProcessingException {
+        Page<User> page = new Page<>(3,3000);
+
+        IPage<User> userIPage = userMapper.selectPage(page, null);
+        String json = new ObjectMapper().writeValueAsString(userIPage);
+        System.out.println(json);
+    }
+
+
+    @Test
+    public void test23(){
+        //自定义方法只需要第一个参数使用Page就可以1
+        Page page = new Page();
+        System.out.println(userMapper.selectUserPage(page));
+    }
 
     void printQueryWrapper(QueryWrapper wrapper) throws JsonProcessingException {
         System.out.println(new ObjectMapper().writeValueAsString(wrapper));
