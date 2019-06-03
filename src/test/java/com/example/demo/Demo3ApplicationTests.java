@@ -18,7 +18,6 @@ import com.example.demo.entity.Reptileconfig;
 import com.example.demo.entity.User;
 import com.example.demo.mapper.ReptileconfigMapper;
 import com.example.demo.mapper.UserMapper;
-import com.example.demo.service.impl.UserServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -134,6 +133,7 @@ public class Demo3ApplicationTests {
         autoGenerator.setStrategy(strategyConfig);
 
         PackageConfig packageConfig = new PackageConfig();
+        packageConfig.setXml("mapper");
         packageConfig.setParent("com.example.demo");
         autoGenerator.setPackageInfo(packageConfig);
 
@@ -257,7 +257,9 @@ public class Demo3ApplicationTests {
 
     @Test
     public void test19(){
+        List<User> all = userMapper.getAll(Wrappers.<User>lambdaQuery().like(User::getId, "2"));
 
+        all.forEach(System.out::println);
     }
 
 

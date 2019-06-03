@@ -11,3 +11,7 @@ logging:
   level:
     root:
       root: info
+
+
+mybatis-plus:
+  mapper-locations: com/example/demo/mapper/xml/*.xml
