@@ -12,7 +12,6 @@ import org.springframework.context.annotation.PropertySource;
         @MapperScan("com.example.demo"),
 
 })
-@ImportResource("classpath:spring-mybatis.xml")
 public class Demo3Application {
 
     public static void main(String[] args) {

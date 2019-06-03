@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -111,6 +112,7 @@ public class Demo3ApplicationTests {
         GlobalConfig globalConfig = new GlobalConfig();
         globalConfig.setOutputDir(System.getProperty("user.dir") + "/src/main/java");
         globalConfig.setOpen(false);
+        globalConfig.setActiveRecord(true);
         globalConfig.setAuthor("");
         globalConfig.setBaseColumnList(false);
         globalConfig.setFileOverride(true);
@@ -125,6 +127,7 @@ public class Demo3ApplicationTests {
 
 
         StrategyConfig strategyConfig = new StrategyConfig();
+
         strategyConfig.setEntityLombokModel(true);
         strategyConfig.setColumnNaming(NamingStrategy.underline_to_camel);
         strategyConfig.setNaming(NamingStrategy.underline_to_camel);
@@ -265,7 +268,7 @@ public class Demo3ApplicationTests {
     }
 
     @Test
-    public void test20(){
+    public void test20() {
         Page<User> page = new Page<>();
         page.setSize(2);
         IPage<User> userIPage = userMapper.selectPage(page, null);
@@ -275,7 +278,7 @@ public class Demo3ApplicationTests {
     }
 
     @Test
-    public void test21(){
+    public void test21() {
         Page<User> page = new Page<>();
 
         IPage<Map<String, Object>> mapIPage = userMapper.selectMapsPage(page, null);
@@ -286,7 +289,7 @@ public class Demo3ApplicationTests {
 
     @Test
     public void test22() throws JsonProcessingException {
-        Page<User> page = new Page<>(3,3000);
+        Page<User> page = new Page<>(3, 3000);
 
         IPage<User> userIPage = userMapper.selectPage(page, null);
         String json = new ObjectMapper().writeValueAsString(userIPage);
@@ -295,10 +298,38 @@ public class Demo3ApplicationTests {
 
 
     @Test
-    public void test23(){
+    public void test23() {
         //自定义方法只需要第一个参数使用Page就可以1
         Page page = new Page();
         System.out.println(userMapper.selectUserPage(page));
+    }
+
+    @Test
+    public void test24() {
+        User user = new User();
+        user.setName("张三");
+        user.setId(12L);
+        //逻辑删除是可以修改的
+        user.setIsDel("1");
+        userMapper.update(user, Wrappers.<User>lambdaUpdate().set(User::getIsDel, "0").eq(User::getName, "123"));
+    }
+
+
+    @Test
+    public void test25() {
+        User user = new User();
+        user.setId(123123L);
+        user.setName("123123");
+        user.insertOrUpdate();
+
+    }
+
+    @Test
+    public void test27() {
+        User user = new User();
+        user.setId(123123L);
+        user.setName("123123");
+        user.deleteById();
     }
 
     void printQueryWrapper(QueryWrapper wrapper) throws JsonProcessingException {

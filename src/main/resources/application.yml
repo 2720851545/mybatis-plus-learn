@@ -15,3 +15,6 @@ logging:
 
 mybatis-plus:
   mapper-locations: com/example/demo/mapper/xml/*.xml
+  global-config:
+    db-config:
+      id-type: auto
