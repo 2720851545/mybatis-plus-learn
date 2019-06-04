@@ -9,8 +9,7 @@ spring:
     data: classpath:db/data-mysql.sql
 logging:
   level:
-    root:
-      root: info
+    root: debug
 
 
 mybatis-plus:
@@ -18,3 +17,4 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
+  type-aliases-package: com.example.demo.entity

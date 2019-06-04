@@ -1,12 +1,9 @@
 package com.example.demo.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -51,7 +48,7 @@ public class User extends Model<User> implements Serializable {
     @TableField("email")
     private String email;
 
-    @TableLogic("ab")
+    @TableLogic()
     @TableField("is_del")
     private String isDel;
 

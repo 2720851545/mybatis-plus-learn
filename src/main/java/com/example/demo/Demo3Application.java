@@ -9,7 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication()
 @MapperScans(value = {
-        @MapperScan("com.example.demo"),
+        @MapperScan("com.example.demo.mapper"),
 
 })
 public class Demo3Application {

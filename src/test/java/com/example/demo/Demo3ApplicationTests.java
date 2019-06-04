@@ -24,12 +24,14 @@ import com.example.demo.mapper.UserMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -321,6 +323,7 @@ public class Demo3ApplicationTests {
         user.setId(123123L);
         user.setName("123123");
         user.insertOrUpdate();
+
 
     }
 
